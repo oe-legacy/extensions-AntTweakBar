@@ -39,14 +39,14 @@ public:
     void SetupBar() {
         bar = TwNewBar(name.c_str());
 
-        AddFields();
+        AddFields(this);
 };
 
     TwBar* GetBar() {return bar;}
     
     // add button?
 
-    virtual void AddFields() =0;
+    virtual void AddFields(ITweakBar* bar) =0;
     
     template <class T> static void TW_CALL AntCallback(void* cp) {
         Callback<T>* cb = (Callback<T>*)cp;
