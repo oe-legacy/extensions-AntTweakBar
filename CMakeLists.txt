@@ -20,6 +20,7 @@ ENDIF(APPLE)
 
 ADD_LIBRARY(Extensions_AntTweakBar
   Display/AntTweakBarModule.cpp
+  Devices/AntSDLInput.cpp
   ${ANT_SOURCES}
 
 )
