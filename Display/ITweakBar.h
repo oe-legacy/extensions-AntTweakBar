@@ -9,8 +9,15 @@ using namespace std;
 namespace OpenEngine {
 namespace Display {
 
+    class ICallback {
+    public:
+        string name;
+        virtual ~ICallback() {}
+        virtual void Call() =0;
+    };
+
 template <class T>
-class Callback {
+class Callback : public ICallback {
 private:
     T& instance;
     void (T::*memberFunc)();
@@ -20,9 +27,9 @@ public:
         memberFunc = ptr;
     }
 
-    ~Callback();
+    virtual ~Callback() {}
 
-    void Call() {
+    virtual void Call() {
         (instance.*memberFunc)();
     }
 };
@@ -48,8 +55,8 @@ public:
 
     virtual void AddFields(ITweakBar* bar) =0;
     
-    template <class T> static void TW_CALL AntCallback(void* cp) {
-        Callback<T>* cb = (Callback<T>*)cp;
+     static void TW_CALL AntCallback(void* cp) {
+        ICallback* cb = (ICallback*)cp;
         cb->Call();
     }
 
