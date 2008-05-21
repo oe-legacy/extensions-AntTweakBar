@@ -105,56 +105,52 @@ namespace OpenEngine {
 		void AntSDLInput::Process(const float deltaTime, const float percent) {
 			
 			// ... replace with your implementation ...
-			
+
+
+            KeyboardEventArg karg;
+            MouseMovedEventArg mmarg;
+
 			while(SDL_PollEvent(&event) && (SDL_GetAppState() & SDL_APPINPUTFOCUS )) {
 				
 				if(validator && validator(&event)) {
 					continue;
 				}
-				switch(event.type){
-					case SDL_KEYUP:{
-						keyboardEvent.mod = (KeyMod) (keyboardEvent.mod & ~(event.key.keysym.mod));
-						keyboardEvent.sym = (Key)event.key.keysym.sym;
-						IKeyboard::keyUpEvent.Notify(keyboardEvent);
-						break;
-					}
-					case SDL_KEYDOWN:{
-						keyboardEvent.mod = (KeyMod) (keyboardEvent.mod | event.key.keysym.mod);
-						keyboardEvent.sym = (Key)event.key.keysym.sym;
-						IKeyboard::keyDownEvent.Notify(keyboardEvent);
-						break;
-					}
-					case SDL_MOUSEBUTTONDOWN:{
-						MouseButtonEventArg e;
-						state.buttons = (MouseButton)(state.buttons | 1<<(event.button.button-1));
-						e.button = (MouseButton)(1<<(event.button.button - 1));
-						e.state = state;
-						IMouse::mouseDownEvent.Notify(e);
-						break;
-					}
-					case SDL_MOUSEBUTTONUP:{
-						MouseButtonEventArg e;
-						state.buttons = (MouseButton)(state.buttons & ~(1<<(event.button.button-1)));
-						e.button = (MouseButton)(1<<(event.button.button - 1));
-						e.state = state;
-						IMouse::mouseUpEvent.Notify(e);
-						break;
-					}
-					case SDL_MOUSEMOTION:{
-						MouseMovedEventArg e;
-						e.x = state.x = event.motion.x;
-						e.y = state.y = event.motion.y;
-						e.dx = event.motion.xrel;
-						e.dy = event.motion.yrel;
-						e.buttons = state.buttons;
-						IMouse::mouseMovedEvent.Notify(e);
-						//logger.info << "mouse move " << e.x << " " << e.y << logger.end;
-						break;
-					}
-
-					case SDL_QUIT:
-						OpenEngine::Core::IGameEngine::Instance().Stop();
-				}
+        switch (event.type) {
+        case SDL_QUIT:
+            OpenEngine::Core::IGameEngine::Instance().Stop();
+            break;
+        case SDL_KEYDOWN:
+        case SDL_KEYUP:
+            // set key symbol and modifier
+            karg.sym = (Key)    event.key.keysym.sym;
+            karg.mod = (KeyMod) event.key.keysym.mod;
+            karg.type = (event.type == SDL_KEYDOWN)?KeyboardEventArg::PRESS:KeyboardEventArg::RELEASE;
+            // notify event
+            IKeyboard::keyEvent.Notify(karg);
+            break;
+        case SDL_MOUSEMOTION:
+            // set mouse position and get button modifiers
+            state.buttons = mmarg.buttons = (MouseButton)(int)SDL_GetMouseState(NULL, NULL);
+            state.x = mmarg.x = event.motion.x;
+            state.y = mmarg.y = event.motion.y;
+            mmarg.dx = event.motion.xrel;
+            mmarg.dy = event.motion.yrel;
+            IMouse::mouseMovedEvent.Notify(mmarg);
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+            // set mouse position and get button modifiers
+            state.buttons = (MouseButton) (int) SDL_GetMouseState(NULL, NULL);
+            state.x = event.button.x;
+            state.y = event.button.y;
+            // create a mouse event
+            MouseButtonEventArg marg;
+            marg.state = state;
+            marg.button = (MouseButton) (int) SDL_BUTTON(event.button.button);
+            marg.type = (event.type == SDL_MOUSEBUTTONDOWN)?MouseButtonEventArg::PRESS:MouseButtonEventArg::RELEASE;
+            IMouse::mouseButtonEvent.Notify(marg);
+            break;
+        } // switch on event type
 				// TODO: something... scroll
 				
 			}
