@@ -42,7 +42,7 @@
 #endif
 #if defined(__APPLE__)
 #   define ANT_APPLE
-#elif defined(_UNIX)
+#elif defined(unix)
 #	define ANT_UNIX
 #	include <X11/cursorfont.h>
 #	include <GL/glx.h>

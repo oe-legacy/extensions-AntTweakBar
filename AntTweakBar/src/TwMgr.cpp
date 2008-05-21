@@ -66,7 +66,7 @@ char g_ErrParse[512];
 
 void ANT_CALL TwGlobalError(const char *_ErrorMessage);
 
-#if defined(_UNIX)
+#if defined(ANT_UNIX) || defined(ANT_APPLE)
 #define _stricmp strcasecmp
 #define _strdup strdup
 #endif

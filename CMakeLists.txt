@@ -1,7 +1,7 @@
 
 # Create the extension library
 INCLUDE_DIRECTORIES("AntTweakBar/include")
-ADD_DEFINITIONS(-D_UNIX)
+#ADD_DEFINITIONS(-D_UNIX)
 
 SET( ANT_SOURCES
        AntTweakBar/src/TwPrecomp.cpp
