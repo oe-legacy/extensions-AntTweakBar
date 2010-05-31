@@ -43,6 +43,9 @@
 #endif
 
 #if defined(_UNIX)
+#   include <cstring>
+#   include <cmath>
+#   include <cstdlib>
 #   define ANT_UNIX
 #   include <X11/cursorfont.h>
 #   define GLX_GLXEXT_LEGACY
