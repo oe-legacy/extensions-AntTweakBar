@@ -13,8 +13,8 @@ SUBDIRS("AntTweakBar")
 ADD_LIBRARY(Extensions_AntTweakBar  
   Display/AntTweakBar.h
   Display/AntTweakBar.cpp
-//  ${ANT_SOURCES}
-
+  Display/ITweakBar.h
+  Display/TestBar.h
 )
 
 

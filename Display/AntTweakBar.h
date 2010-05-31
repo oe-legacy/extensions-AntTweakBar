@@ -15,7 +15,7 @@
 #include <Core/IListener.h>
 #include <Renderers/IRenderer.h>
 #include <AntTweakBar/include/AntTweakBar.h>
-
+#include <Display/ITweakBar.h>
 namespace OpenEngine {
 namespace Display {
 
@@ -53,6 +53,12 @@ private:
     
     Event<MouseButtonEventArg> umbe;
     Event<MouseMovedEventArg> umme;
+
+    list<ITweakBar*> bars;
+    list<ITweakBar*> barQueue;
+    bool initialized;
+
+    void _AddBar(ITweakBar* b);
 public:
 
     AntTweakBar();
@@ -66,6 +72,8 @@ public:
     void Handle(MouseButtonEventArg arg);       
 
     void AttachTo(IRenderer& renderer);
+
+    void AddBar(ITweakBar* bar);
 
     IEvent<MouseButtonEventArg>& MouseButtonEvent() {return umbe;}
     IEvent<MouseMovedEventArg>& MouseMovedEvent() {return umme;}

@@ -4,7 +4,9 @@
 namespace OpenEngine {
 namespace Display {
 
-AntTweakBar::AntTweakBar() : init(Initializer(*this)), deinit(Deinitializer(*this)) {
+AntTweakBar::AntTweakBar() : init(Initializer(*this)), 
+                             deinit(Deinitializer(*this)),
+                             initialized(false) {
     
 }
 
@@ -17,6 +19,12 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
     
     TwInit(TW_OPENGL, NULL);
     TwWindowSize(c.GetWidth(), c.GetHeight());
+    initialized = true;
+    for (list<ITweakBar*>::iterator itr = barQueue.begin();
+         itr != barQueue.end();
+         itr++) {
+        _AddBar(*itr);
+    }
 }
 
 void AntTweakBar::Handle(RenderingEventArg arg) {
@@ -33,6 +41,19 @@ void AntTweakBar::Handle(MouseMovedEventArg arg) {
     int handled = TwMouseMotion(arg.x, arg.y);
     if (!handled)
         umme.Notify(arg);
+}
+
+void AntTweakBar::AddBar(ITweakBar* b) {
+    if (!initialized) {
+        barQueue.push_back(b);
+    } else {
+        _AddBar(b);
+    }
+}
+
+void AntTweakBar::_AddBar(ITweakBar* b) {
+    bars.push_back(b);
+    b->SetupBar();
 }
 
 void AntTweakBar::AttachTo(IRenderer& renderer) { 

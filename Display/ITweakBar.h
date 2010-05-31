@@ -55,7 +55,7 @@ public:
 
     virtual void AddFields(ITweakBar* bar) =0;
     
-     static void TW_CALL AntCallback(void* cp) {
+    static void TW_CALL AntCallback(void* cp) {
         ICallback* cb = (ICallback*)cp;
         cb->Call();
     }
