@@ -1,4 +1,4 @@
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 //  @file       AntTweakBar.h
 //
@@ -15,9 +15,7 @@
 //              AntTweakBar is a free software released under the zlib license.
 //              For conditions of distribution and use, see License.txt
 //
-//  note:       TAB=4
-//
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 
 #if !defined TW_INCLUDED
@@ -25,26 +23,25 @@
 
 #include <stddef.h>
 
-#define TW_VERSION  111     // Version Mmm : M=Major mm=minor (e.g., 102 is version 1.02)
+#define TW_VERSION  113 // Version Mmm : M=Major mm=minor (e.g., 102 is version 1.02)
 
 
 #ifdef  __cplusplus
 #   if defined(_MSC_VER)
-#		pragma warning(push)
-#		pragma warning(disable: 4995 4530)
-#		include <string>
-#		pragma warning(pop)
-#	else
-#		include <string>
-#	endif
+#       pragma warning(push)
+#       pragma warning(disable: 4995 4530)
+#       include <string>
+#       pragma warning(pop)
+#   else
+#       include <string>
+#   endif
     extern "C" {
 #endif  // __cplusplus
 
 
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //  OS specific definitions
-//  ---------------------------------------------------------------------------
- 
+// ----------------------------------------------------------------------------
 
 #if defined(_WIN32) || defined(_WIN64)
 #   define TW_CALL          __stdcall
@@ -55,7 +52,6 @@
 #   define TW_EXPORT_API
 #   define TW_IMPORT_API
 #endif
-
 
 #if defined TW_EXPORTS
 #   define TW_API   TW_EXPORT_API
@@ -72,25 +68,29 @@
 #endif
 
 
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //  Bar functions and definitions
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
+typedef struct CTwBar TwBar; // structure CTwBar is not exposed.
 
-typedef struct CTwBar TwBar;    // structure CTwBar is not exposed.
-
-TW_API TwBar *      TW_CALL TwNewBar(const char *name);
+TW_API TwBar *      TW_CALL TwNewBar(const char *barName);
 TW_API int          TW_CALL TwDeleteBar(TwBar *bar);
 TW_API int          TW_CALL TwDeleteAllBars();
 TW_API int          TW_CALL TwSetTopBar(const TwBar *bar);
 TW_API TwBar *      TW_CALL TwGetTopBar();
+TW_API int          TW_CALL TwSetBottomBar(const TwBar *bar);
+TW_API TwBar *      TW_CALL TwGetBottomBar();
 TW_API const char * TW_CALL TwGetBarName(TwBar *bar);
+TW_API int          TW_CALL TwGetBarCount();
+TW_API TwBar *      TW_CALL TwGetBarByIndex(int barIndex);
+TW_API TwBar *      TW_CALL TwGetBarByName(const char *barName);
+TW_API int          TW_CALL TwRefreshBar(TwBar *bar);
 
 
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //  Var functions and definitions
-//  ---------------------------------------------------------------------------
-
+// ----------------------------------------------------------------------------
 
 typedef enum ETwType
 {
@@ -110,15 +110,19 @@ typedef enum ETwType
     TW_TYPE_UINT32,
     TW_TYPE_FLOAT,
     TW_TYPE_DOUBLE,
-    TW_TYPE_COLOR32,        // 32 bits color. Order is RGBA if API is OpenGL or Direct3D10, and inversed if API is Direct3D9 (can be modified by defining 'colorOrder=...', see doc)
-    TW_TYPE_COLOR3F,        // 3 floats color. Order is RGB.
-    TW_TYPE_COLOR4F,        // 4 floats color. Order is RGBA.
-	TW_TYPE_CDSTRING,		// Null-terminated C Dynamic String (pointer to an array of char dynamically allocated with malloc/realloc/strdup)
+    TW_TYPE_COLOR32,    // 32 bits color. Order is RGBA if API is OpenGL or Direct3D10, and inversed if API is Direct3D9 (can be modified by defining 'colorOrder=...', see doc)
+    TW_TYPE_COLOR3F,    // 3 floats color. Order is RGB.
+    TW_TYPE_COLOR4F,    // 4 floats color. Order is RGBA.
+    TW_TYPE_CDSTRING,   // Null-terminated C Dynamic String (pointer to an array of char dynamically allocated with malloc/realloc/strdup)
 #ifdef __cplusplus
-	TW_TYPE_STDSTRING,		// C++ STL string (std::string)
+    TW_TYPE_STDSTRING = (0x2fff0000+sizeof(std::string)),  // C++ STL string (std::string)
 #endif // __cplusplus
+    TW_TYPE_QUAT4F = TW_TYPE_CDSTRING+2, // 4 floats encoding a quaternion {qx,qy,qz,qs}
+    TW_TYPE_QUAT4D,     // 4 doubles encoding a quaternion {qx,qy,qz,qs}
+    TW_TYPE_DIR3F,      // direction vector represented by 3 floats
+    TW_TYPE_DIR3D       // direction vector represented by 3 doubles
 } TwType;
-#define	TW_TYPE_CSSTRING(n)	((TwType)(0x30000000+((n)&0xfffffff)))		// Null-terminated C Static String of size n (defined as char[n], with n<2^28)
+#define TW_TYPE_CSSTRING(n) ((TwType)(0x30000000+((n)&0xfffffff))) // Null-terminated C Static String of size n (defined as char[n], with n<2^28)
 
 typedef void (TW_CALL * TwSetVarCallback)(const void *value, void *clientData);
 typedef void (TW_CALL * TwGetVarCallback)(void *value, void *clientData);
@@ -151,25 +155,34 @@ TW_API TwType   TW_CALL TwDefineEnum(const char *name, const TwEnumVal *enumValu
 TW_API TwType   TW_CALL TwDefineStruct(const char *name, const TwStructMember *structMembers, unsigned int nbMembers, size_t structSize, TwSummaryCallback summaryCallback, void *summaryClientData);
 
 typedef void (TW_CALL * TwCopyCDStringToClient)(char **destinationClientStringPtr, const char *sourceString);
-TW_API void		TW_CALL TwCopyCDStringToClientFunc(TwCopyCDStringToClient copyCDStringFunc);
-TW_API void		TW_CALL TwCopyCDStringToLibrary(char **destinationLibraryStringPtr, const char *sourceClientString);
+TW_API void     TW_CALL TwCopyCDStringToClientFunc(TwCopyCDStringToClient copyCDStringFunc);
+TW_API void     TW_CALL TwCopyCDStringToLibrary(char **destinationLibraryStringPtr, const char *sourceClientString);
 #ifdef __cplusplus
 typedef void (TW_CALL * TwCopyStdStringToClient)(std::string& destinationClientString, const std::string& sourceString);
-TW_API void		TW_CALL TwCopyStdStringToClientFunc(TwCopyStdStringToClient copyStdStringToClientFunc);
-TW_API void		TW_CALL TwCopyStdStringToLibrary(std::string& destinationLibraryString, const std::string& sourceClientString);
+TW_API void     TW_CALL TwCopyStdStringToClientFunc(TwCopyStdStringToClient copyStdStringToClientFunc);
+TW_API void     TW_CALL TwCopyStdStringToLibrary(std::string& destinationLibraryString, const std::string& sourceClientString);
 #endif // __cplusplus
 
+typedef enum ETwParamValueType
+{
+    TW_PARAM_INT32,
+    TW_PARAM_FLOAT,
+    TW_PARAM_DOUBLE,
+    TW_PARAM_CSTRING // Null-terminated array of char (ie, c-string)
+} TwParamValueType;
+TW_API int      TW_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, TwParamValueType paramValueType, unsigned int outValueMaxCount, void *outValues);
+TW_API int      TW_CALL TwSetParam(TwBar *bar, const char *varName, const char *paramName, TwParamValueType paramValueType, unsigned int inValueCount, const void *inValues);
 
-//  ---------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 //  Managment functions and definitions
-//  ---------------------------------------------------------------------------
-
+// ----------------------------------------------------------------------------
 
 typedef enum ETwGraphAPI
 {
     TW_OPENGL           = 1,
     TW_DIRECT3D9        = 2,
-	TW_DIRECT3D10		= 3
+    TW_DIRECT3D10       = 3
 } TwGraphAPI;
 
 TW_API int      TW_CALL TwInit(TwGraphAPI graphAPI, void *device);
@@ -228,7 +241,7 @@ TW_API int      TW_CALL TwKeyPressed(int key, int modifiers);
 typedef enum ETwMouseAction
 {
     TW_MOUSE_RELEASED,
-    TW_MOUSE_PRESSED,   
+    TW_MOUSE_PRESSED  
 } TwMouseAction;
 typedef enum ETwMouseButtonID
 {
@@ -246,19 +259,19 @@ typedef void (TW_CALL * TwErrorHandler)(const char *errorMessage);
 TW_API void     TW_CALL TwHandleErrors(TwErrorHandler errorHandler);
 
 
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //  Helper functions to translate events from some common window management
 //  frameworks to AntTweakBar.
 //  They call TwKeyPressed, TwMouse* and TwWindowSize for you (implemented in
 //  files TwEventWin.c TwEventSDL.c TwEventGLFW.c TwEventGLUT.c)
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 //  For Windows message proc
 #ifndef _W64    // Microsoft specific (detection of 64 bits portability problems)
 #   define _W64
 #endif  // _W64
 TW_API int      TW_CALL TwEventWin(void *wnd, unsigned int msg, unsigned int _W64 wParam, int _W64 lParam);
-#define TwEventWin32 TwEventWin // For compatibility with AntTweakBar versions prior to 1.11
+#define TwEventWin32    TwEventWin // For compatibility with AntTweakBar versions prior to 1.11
 
 //  For libSDL event loop
 TW_API int      TW_CALL TwEventSDL(const void *sdlEvent);
@@ -287,10 +300,9 @@ typedef void (TW_GLUT_CALL *GLUTkeyboardfun)(unsigned char glutKey, int mouseX, 
 typedef void (TW_GLUT_CALL *GLUTspecialfun)(int glutKey, int mouseX, int mouseY);
 
  
-//  ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //  Make sure the types have the right sizes
-//  ---------------------------------------------------------------------------
-
+// ----------------------------------------------------------------------------
 
 #define TW_COMPILE_TIME_ASSERT(name, x) typedef int TW_DUMMY_ ## name[(x) * 2 - 1]
 
@@ -298,7 +310,7 @@ TW_COMPILE_TIME_ASSERT(CHAR,    sizeof(char)    == 1);
 TW_COMPILE_TIME_ASSERT(SHORT,   sizeof(short)   == 2);
 TW_COMPILE_TIME_ASSERT(INT,     sizeof(int)     == 4);
 TW_COMPILE_TIME_ASSERT(FLOAT,   sizeof(float)   == 4);
-TW_COMPILE_TIME_ASSERT(DOUBLE,	sizeof(double)  == 8);
+TW_COMPILE_TIME_ASSERT(DOUBLE,  sizeof(double)  == 8);
 
 
 //  ---------------------------------------------------------------------------

@@ -1,15 +1,15 @@
-//	---------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------
 //
-//	@file		TwFonts.h
-//	@brief		Bitmaps fonts
-//	@author		Philippe Decaudin - http://www.antisphere.com
+//  @file       TwFonts.h
+//  @brief      Bitmaps fonts
+//  @author     Philippe Decaudin - http://www.antisphere.com
 //  @license    This file is part of the AntTweakBar library.
 //              For conditions of distribution and use, see License.txt
 //
-//	notes:		Private header
-//				TAB=4
+//  notes:      Private header
+//              TAB=4
 //
-//	---------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------
 
 
 #if !defined ANT_TW_FONTS_INCLUDED
@@ -36,19 +36,19 @@ Last row of a line of characters is a delimiter with color=zero at the last pixe
 
 struct CTexFont
 {
-	unsigned char *	m_TexBytes;
-	int				m_TexWidth;		// power of 2
-	int				m_TexHeight;	// power of 2
-	float			m_CharU0[256];
-	float			m_CharV0[256];
-	float			m_CharU1[256];
-	float			m_CharV1[256];
-	int				m_CharWidth[256];
-	int				m_CharHeight;
-	int				m_NbCharRead;
+    unsigned char * m_TexBytes;
+    int             m_TexWidth;     // power of 2
+    int             m_TexHeight;    // power of 2
+    float           m_CharU0[256];
+    float           m_CharV0[256];
+    float           m_CharU1[256];
+    float           m_CharV1[256];
+    int             m_CharWidth[256];
+    int             m_CharHeight;
+    int             m_NbCharRead;
 
-	CTexFont();
-	~CTexFont();
+    CTexFont();
+    ~CTexFont();
 };
 
 
@@ -63,4 +63,4 @@ void TwGenerateDefaultFonts();
 void TwDeleteDefaultFonts();
 
 
-#endif	// !defined ANT_TW_FONTS_INCLUDED
+#endif  // !defined ANT_TW_FONTS_INCLUDED
