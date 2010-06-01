@@ -9,31 +9,32 @@ using namespace std;
 namespace OpenEngine {
 namespace Display {
 
-    class ICallback {
-    public:
-        string name;
-        virtual ~ICallback() {}
-        virtual void Call() =0;
-    };
+// class ICallback {
+// public:
+//     string name;
+//     virtual ~ICallback() {}
+//     virtual void Call() =0;
+// };
 
-template <class T>
-class Callback : public ICallback {
-private:
-    T& instance;
-    void (T::*memberFunc)();
-public:
+// template <class T>
+// class Callback : public ICallback {
+// private:
+//     T& instance;
+//     void (T::*memberFunc)();
+// public:
 
-    Callback(T& inst, void (T::*ptr)()) : instance(inst) {
-        memberFunc = ptr;
-    }
+//     Callback(T& inst, void (T::*ptr)()) : instance(inst) {
+//         memberFunc = ptr;
+//     }
 
-    virtual ~Callback() {}
+//     virtual ~Callback() {}
 
-    virtual void Call() {
-        (instance.*memberFunc)();
-    }
-};
+//     virtual void Call() {
+//         (instance.*memberFunc)();
+//     }
+// };
 
+class AntTweakBar;
 
 class ITweakBar {
 private:
@@ -43,22 +44,22 @@ public:
     ITweakBar(string name) : name(name) {};
     virtual ~ITweakBar() {};
 
-    void SetupBar() {
+    void SetupBar(AntTweakBar&m) {
         bar = TwNewBar(name.c_str());
 
-        AddFields(this);
-};
+        AddFields(m);
+    };
 
     TwBar* GetBar() {return bar;}
     
     // add button?
 
-    virtual void AddFields(ITweakBar* bar) =0;
+    virtual void AddFields(AntTweakBar&m) =0;
     
-    static void TW_CALL AntCallback(void* cp) {
-        ICallback* cb = (ICallback*)cp;
-        cb->Call();
-    }
+    // static void TW_CALL AntCallback(void* cp) {
+    //     ICallback* cb = (ICallback*)cp;
+    //     cb->Call();
+    // }
 
 };     
 

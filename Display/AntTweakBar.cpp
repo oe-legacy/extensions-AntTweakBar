@@ -19,6 +19,18 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
     
     TwInit(TW_OPENGL, NULL);
     TwWindowSize(c.GetWidth(), c.GetHeight());
+
+    TwStructMember vec3fStruct[] = {
+        {"x", TW_TYPE_FLOAT, offsetof(antVec3f, x), ""},
+        {"y", TW_TYPE_FLOAT, offsetof(antVec3f, y), ""},
+        {"z", TW_TYPE_FLOAT, offsetof(antVec3f, z), ""},
+    };
+    antVec3fType = TwDefineStruct("AntVec3F", 
+                                  vec3fStruct,
+                                  3,sizeof(antVec3f),
+                                  NULL,NULL);
+
+
     initialized = true;
     for (list<ITweakBar*>::iterator itr = barQueue.begin();
          itr != barQueue.end();
@@ -53,7 +65,7 @@ void AntTweakBar::AddBar(ITweakBar* b) {
 
 void AntTweakBar::_AddBar(ITweakBar* b) {
     bars.push_back(b);
-    b->SetupBar();
+    b->SetupBar(*this);
 }
 
 void AntTweakBar::AttachTo(IRenderer& renderer) { 

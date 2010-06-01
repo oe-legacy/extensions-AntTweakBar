@@ -61,6 +61,14 @@ private:
     void _AddBar(ITweakBar* b);
 public:
 
+    TwType antVec3fType;
+    struct antVec3f {
+        float x;
+        float y;
+        float z;
+    };
+
+
     AntTweakBar();
     
     void Initialize(RenderingEventArg arg);
