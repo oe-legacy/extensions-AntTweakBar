@@ -53,6 +53,7 @@ private:
     
     Event<MouseButtonEventArg> umbe;
     Event<MouseMovedEventArg> umme;
+    Event<KeyboardEventArg> uke;
 
     list<ITweakBar*> bars;
     list<ITweakBar*> barQueue;
@@ -85,6 +86,7 @@ public:
 
     IEvent<MouseButtonEventArg>& MouseButtonEvent() {return umbe;}
     IEvent<MouseMovedEventArg>& MouseMovedEvent() {return umme;}
+    IEvent<KeyboardEventArg>& KeyEvent() {return uke;}
 
 };
 

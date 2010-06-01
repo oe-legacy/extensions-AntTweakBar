@@ -42,7 +42,17 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
 void AntTweakBar::Handle(RenderingEventArg arg) {
     TwDraw();
 }
-void AntTweakBar::Handle(KeyboardEventArg arg) {}
+void AntTweakBar::Handle(KeyboardEventArg arg) {
+    int handled = 0;
+    if (arg.type == EVENT_PRESS) {
+        handled = TwKeyPressed(arg.sym, arg.mod);
+    }
+
+    if (!handled) {
+        // TODO this will send more ups than downs :/
+        uke.Notify(arg);
+    }
+}
 void AntTweakBar::Handle(MouseButtonEventArg arg) {
     int handled = TwMouseButton(arg.type == EVENT_PRESS?TW_MOUSE_PRESSED:TW_MOUSE_RELEASED,
                                 (TwMouseButtonID)arg.button);
