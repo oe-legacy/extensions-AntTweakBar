@@ -69,6 +69,14 @@ public:
         float z;
     };
 
+    TwType antVec4fType;
+    struct antVec4f {
+        float x;
+        float y;
+        float z;
+        float w;
+    };
+
 
     AntTweakBar();
     

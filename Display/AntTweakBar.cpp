@@ -31,6 +31,18 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
                                   NULL,NULL);
 
 
+    TwStructMember vec4fStruct[] = {
+        {"x", TW_TYPE_FLOAT, offsetof(antVec4f, x), ""},
+        {"y", TW_TYPE_FLOAT, offsetof(antVec4f, y), ""},
+        {"z", TW_TYPE_FLOAT, offsetof(antVec4f, z), ""},
+        {"w", TW_TYPE_FLOAT, offsetof(antVec4f, w), ""},
+    };
+    antVec4fType = TwDefineStruct("AntVec4F", 
+                                  vec4fStruct,
+                                  4,sizeof(antVec4f),
+                                  NULL,NULL);
+
+
     initialized = true;
     for (list<ITweakBar*>::iterator itr = barQueue.begin();
          itr != barQueue.end();
