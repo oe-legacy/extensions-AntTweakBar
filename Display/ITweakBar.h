@@ -3,7 +3,7 @@
 
 #include <string>
 
-#ifdef(_WIN32)
+#ifdef WIN32
 	#include <AntTweakBar.h>
 #else
 	#include <AntTweakBar/include/AntTweakBar.h>

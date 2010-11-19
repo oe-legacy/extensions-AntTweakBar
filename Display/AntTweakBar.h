@@ -15,7 +15,7 @@
 #include <Core/IListener.h>
 #include <Renderers/IRenderer.h>
 
-#ifdef(_WIN32)
+#ifdef WIN32
 	#include <AntTweakBar.h>
 #else
 	#include <AntTweakBar/include/AntTweakBar.h>
