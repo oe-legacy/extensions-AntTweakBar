@@ -2,7 +2,13 @@
 #define _ITWEAKBAR_H_
 
 #include <string>
-#include <AntTweakBar/include/AntTweakBar.h>
+
+#ifdef(_WIN32)
+	#include <AntTweakBar.h>
+#else
+	#include <AntTweakBar/include/AntTweakBar.h>
+#endif
+
 #include <Math/Vector.h>
 #include <Logging/Logger.h>
 #include <stdint.h>

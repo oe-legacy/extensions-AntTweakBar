@@ -14,7 +14,13 @@
 #include <Devices/IMouse.h>
 #include <Core/IListener.h>
 #include <Renderers/IRenderer.h>
-#include <AntTweakBar/include/AntTweakBar.h>
+
+#ifdef(_WIN32)
+	#include <AntTweakBar.h>
+#else
+	#include <AntTweakBar/include/AntTweakBar.h>
+#endif
+
 #include <Display/ITweakBar.h>
 namespace OpenEngine {
 namespace Display {
