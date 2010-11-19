@@ -1,3 +1,6 @@
 # dist file for AntTweakBar
 darcs      /extensions/AntTweakBar            http://openengine.dk/code/extensions/AntTweakBar
 darcs-dev  /extensions/AntTweakBar            fh.daimi.au.dk:/users/cgd/code/extensions/AntTweakBar
+
+# windows libraries
+win32 /libraries http://openengine.dk/data/libraries/AntTweakBar-win32
