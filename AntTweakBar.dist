@@ -3,4 +3,4 @@ darcs      /extensions/AntTweakBar            http://openengine.dk/code/extensio
 darcs-dev  /extensions/AntTweakBar            fh.daimi.au.dk:/users/cgd/code/extensions/AntTweakBar
 
 # windows libraries
-win32 /libraries http://openengine.dk/data/libraries/AntTweakBar-win32
+win32 /libraries http://openengine.dk/data/libraries/AntTweakBar-win32.zip
