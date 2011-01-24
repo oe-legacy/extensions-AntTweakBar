@@ -1,6 +1,6 @@
 #include "AntTweakBar.h"
 #include <Logging/Logger.h>
-
+#include <Meta/OpenGL.h>
 namespace OpenEngine {
 namespace Display {
 
@@ -52,6 +52,9 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
 }
 
 void AntTweakBar::Handle(RenderingEventArg arg) {
+    glUseProgram(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glClientActiveTexture(GL_TEXTURE0);
     TwDraw();
 }
 void AntTweakBar::Handle(KeyboardEventArg arg) {
