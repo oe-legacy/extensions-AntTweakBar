@@ -54,56 +54,22 @@ private:
 
     bool iconify;
     Vector<2,float> position;
+
+    void _SetIconify();
+    void _SetPosition();
+
     
 public:
-    ITweakBar(string name) 
-  : name(name)
-  , bar(0)
-  , iconify(true)
-    {};
-    virtual ~ITweakBar() {};
+    ITweakBar(string name);
+    virtual ~ITweakBar();
 
-    void SetupBar(AntTweakBar&m) {
-        bar = TwNewBar(name.c_str());
-
-        AddFields(m);
-        
-        _SetIconify();
-        _SetPosition();
-
-    };
-
-    TwBar* GetBar() {return bar;}
+    void SetupBar(AntTweakBar&m);
+    TwBar* GetBar();
     
-    // add button?
-
+    void SetIconify(bool s);
+    void SetPosition(Vector<2,float> p);
+    
     virtual void AddFields(AntTweakBar&m) =0;
-    
-    void _SetIconify() {
-        int32_t val = iconify;
-        TwSetParam(bar, NULL, "iconified", TW_PARAM_INT32, 1,  &val);
-    }
-    void _SetPosition() {
-        ostringstream oss;
-        oss << position[0] << ' ' << position[1];
-        TwSetParam(bar, NULL, "position",TW_PARAM_CSTRING, 1, oss.str().c_str());
-    }
-
-    void SetIconify(bool s) {
-        iconify = s;
-        if (bar) _SetIconify(); 
-    }
-
-    void SetPosition(Vector<2,float> p) {
-        position = p; 
-        if (bar) _SetPosition();
-    }
-
-
-    // static void TW_CALL AntCallback(void* cp) {
-    //     ICallback* cb = (ICallback*)cp;
-    //     cb->Call();
-    // }
 
 };     
 
