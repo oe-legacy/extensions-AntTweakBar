@@ -14,40 +14,45 @@
 namespace OpenEngine {
 namespace Utils {
 
-    using namespace std;
+using namespace std;
 
-    TweakGroup::TweakGroup(string name) : TweakItem(name) , isAdded(false) {
+TweakGroup::TweakGroup(string name, string label) : TweakItem(name)
+    , label(label) 
+    , isAdded(false) {
 
+}
+
+void TweakGroup::AddItem(TweakItem *item) {
+    items.push_back(item);
+    item->group = this;
+    dirtySet.insert(item);
+    if (isAdded)
+        TweakItem::SetDirty();        
+}
+
+void TweakGroup::SetDirty(TweakItem* item) {
+    dirtySet.insert(item);
+    TweakItem::SetDirty();
+}
+
+void TweakGroup::AddToAnt() {
+    string barName = TwGetBarName(bar->GetBar());
+    
+    for (set<TweakItem*>::iterator itr = dirtySet.begin();
+         itr != dirtySet.end();
+         itr++) {
+        TweakItem* item = *itr;
+        item->AddToBar(bar);
+        string n = item->GetName();
+        string def = barName + "/" + n + " group=" + GetName();
+        
+        TwDefine(def.c_str());
     }
-
-    void TweakGroup::AddItem(TweakItem *item) {
-        items.push_back(item);
-        item->group = this;
-        dirtySet.insert(item);
-        if (isAdded)
-            TweakItem::SetDirty();        
-    }
-
-    void TweakGroup::SetDirty(TweakItem* item) {
-        dirtySet.insert(item);
-        TweakItem::SetDirty();
-    }
-
-    void TweakGroup::AddToAnt() {
-        string barName = TwGetBarName(bar->GetBar());
-
-        for (set<TweakItem*>::iterator itr = dirtySet.begin();
-             itr != dirtySet.end();
-             itr++) {
-            TweakItem* item = *itr;
-            item->AddToBar(bar);
-            string n = item->GetName();
-            string def = barName + "/" + n + " group=" + GetName();
-
-            TwDefine(def.c_str());
-        }
-        isAdded = true;
-    }
+    string def = barName + "/" + GetName() + " label=" + label;
+    TwDefine(def.c_str());
+    //logger.info << def << logger.end;
+    isAdded = true;
+}
 
 
 } // NS Utils

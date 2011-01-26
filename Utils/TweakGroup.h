@@ -26,11 +26,12 @@ namespace Utils {
  */
 class TweakGroup : public TweakItem {
 private:
+    std::string label;
     std::vector<TweakItem*> items;
     std::set<TweakItem*> dirtySet;
     bool isAdded;
 public:
-    TweakGroup(std::string name);
+    TweakGroup(std::string name, std::string label);
     void AddItem(TweakItem* item);
     void AddToAnt();
     void SetDirty(TweakItem* item);
