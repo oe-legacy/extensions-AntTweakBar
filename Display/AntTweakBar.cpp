@@ -70,7 +70,13 @@ void AntTweakBar::Handle(KeyboardEventArg arg) {
     }
 }
 void AntTweakBar::Handle(MouseButtonEventArg arg) {
-    int handled = TwMouseButton(arg.type == EVENT_PRESS?TW_MOUSE_PRESSED:TW_MOUSE_RELEASED,
+    int handled = 0;
+    static int wheelPos = 0;
+    if (arg.button == BUTTON_WHEEL_UP || arg.button == BUTTON_WHEEL_DOWN) {
+        wheelPos = wheelPos + (arg.button == BUTTON_WHEEL_DOWN?-1:1);
+        handled = TwMouseWheel(wheelPos);
+    } else 
+        handled = TwMouseButton(arg.type == EVENT_PRESS?TW_MOUSE_PRESSED:TW_MOUSE_RELEASED,
                                 (TwMouseButtonID)arg.button);
     if (!handled)
         umbe.Notify(arg);

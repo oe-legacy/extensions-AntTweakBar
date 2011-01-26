@@ -41,5 +41,6 @@ public:
 } // NS OpenEngine
 
 #include <Utils/TweakVar.h>
+#include <Utils/TweakButton.h>
 
 #endif // _OE_TWEAK_BAR_H_
