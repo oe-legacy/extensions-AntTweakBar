@@ -17,20 +17,28 @@ namespace OpenEngine {
 namespace Utils {
 
 class TweakBar;
-
+class TweakGroup;
 /**
  * Short description.
  *
  * @class TweakItem TweakItem.h ons/AntTweakBar/Utils/TweakItem.h
  */
 class TweakItem {
-private:
+    friend class TweakGroup;
+protected:
     std::string name;
-public:
-    TweakItem(std::string n) : name(n) {}
-    virtual void AddToBar(TweakBar* bar) =0;
-    std::string GetName() { return name;}
+    TweakGroup* group;
+    TweakBar* bar;
     
+public:
+    TweakItem(std::string n) : name(n),group(NULL),bar(NULL) {}
+    virtual void AddToAnt() =0;
+    void AddToBar(TweakBar* bar) {
+        this->bar = bar;
+        AddToAnt();
+    }
+    std::string GetName() { return name;}
+    void SetDirty();
 };
 } // NS Utils
 } // NS OpenEngine

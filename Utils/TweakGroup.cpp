@@ -1,4 +1,4 @@
-// 
+//
 // -------------------------------------------------------------------
 // Copyright (C) 2007 OpenEngine.dk (See AUTHORS)
 //
@@ -17,26 +17,46 @@ namespace Utils {
     using namespace std;
 
     TweakGroup::TweakGroup(string name) : TweakItem(name), isAdded(false) {
-        
+
     }
+
     void TweakGroup::AddItem(TweakItem *item) {
         items.push_back(item);
+        item->group = this;
     }
-    void TweakGroup::AddToBar(TweakBar* bar) {
-        for (vector<TweakItem*>::iterator itr = items.begin();
-             itr != items.end();
-             itr++) {
-            TweakItem *item = *itr;
-            item->AddToBar(bar);
-            string n = item->GetName();
 
-            logger.warning << "add [" << n << "] to [" << GetName() << "]" << logger.end;
-            string barName = TwGetBarName(bar->GetBar());
-            string def = barName + "/" + n + " group=" + GetName();
-            logger.error << def << logger.end;
-            TwDefine(def.c_str());
+    void TweakGroup::SetDirty(TweakItem* item) {
+        dirtySet.insert(item);
+        TweakItem::SetDirty();
+    }
 
+    void TweakGroup::AddToAnt() {
+        string barName = TwGetBarName(bar->GetBar());
+        if (isAdded) {
+            for (set<TweakItem*>::iterator itr = dirtySet.begin();
+                 itr != dirtySet.end();
+                 itr++) {
+                TweakItem* item = *itr;
+                item->AddToAnt();
+                string n = item->GetName();
+                string def = barName + "/" + n + " group=" + GetName();
 
+                TwDefine(def.c_str());
+
+            }
+        } else {
+            for (vector<TweakItem*>::iterator itr = items.begin();
+                 itr != items.end();
+                 itr++) {
+                TweakItem *item = *itr;
+                item->AddToBar(bar);
+
+                string n = item->GetName();
+                string def = barName + "/" + n + " group=" + GetName();
+
+                TwDefine(def.c_str());
+            }
+            isAdded = true;
         }
     }
 

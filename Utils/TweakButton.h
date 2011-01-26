@@ -43,8 +43,7 @@ public:
         ((btn->object)->*(btn->action))();
     }
 
-    void AddToBar(TweakBar* bar) {
-        logger.error << "ASDASDSAD" << logger.end;
+    void AddToAnt() {
         TwBar* twBar = bar->GetBar();
         string def = "";
         TwAddButton(twBar,

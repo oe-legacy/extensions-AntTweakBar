@@ -17,6 +17,7 @@
 #include <Utils/TweakGroup.h>
 
 #include <vector>
+#include <set>
 
 namespace OpenEngine {
 namespace Utils {
@@ -29,12 +30,16 @@ namespace Utils {
 class TweakBar : public Display::ITweakBar {
 private:
     std::vector<TweakItem*> items;
+    std::set<TweakItem*> dirtySet;
+    Display::AntTweakBar* controller;
 public:
     TweakBar(string name);
     void AddItem(TweakItem* i);
 
     void AddFields(Display::AntTweakBar&m);
-
+    
+    void SetDirty(TweakItem* i);
+    void Refresh();
 
 };
 } // NS Display

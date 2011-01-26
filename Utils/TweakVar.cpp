@@ -15,20 +15,33 @@
 namespace OpenEngine {
 namespace Utils {
 
+    TweakVar::TweakVar(std::string name, std::string label, Type type)
+    : TweakItem(name), label(label), type(type), isAdded(false) {
+    }
     
+    void TweakVar::AddToAnt() {
+        TwBar *twBar = bar->GetBar();
 
-void TweakVar::AntSetCallback(const void *value, void* ctx) {
-    // const std::string *srcPtr = static_cast<const std::string *>(value);
-    // PropertyTreeNode* node = static_cast<PropertyTreeNode*>(ctx);
-    // node->SetValue(*srcPtr);
+        if (isAdded) {
+            TwRemoveVar(twBar, GetName().c_str());
+        }
 
-}
-void TweakVar::AntGetCallback(void *value, void* ctx) {
-    std::string *destPtr = static_cast<std::string *>(value);
-    //PropertyTreeNode* node = static_cast<PropertyTreeNode*>(ctx);
-    string val = "asd";
-    TwCopyStdStringToLibrary(*destPtr, val);
-}
+        string def = " label=" + label;
+        TwAddVarCB(twBar,
+                   GetName().c_str(),
+                   TypeToTwType(type),
+                   &TweakVar::AntSetCallback,
+                   &TweakVar::AntGetCallback,
+                   this,
+                   def.c_str());
+        isAdded = true;
+    }
+
+
+    void TweakVar::SetType(Type t) {
+        type = t;
+        SetDirty();
+    }
 
 
 } // NS Utils

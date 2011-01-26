@@ -1,4 +1,4 @@
-// 
+//
 // -------------------------------------------------------------------
 // Copyright (C) 2007 OpenEngine.dk (See AUTHORS)
 //
@@ -20,48 +20,50 @@
 namespace OpenEngine {
 namespace Utils {
 
-template <class T>
-class TweakVarHandler {
-public:
-    virtual void SetTweakVar(const void* value, T* context) =0;
-    virtual void GetTweakVar(void* value, T* context) =0;
-};
-
 /**
  * Short description.
  *
  * @class TweakVar TweakVar.h ons/AntTweakBar/Utils/TweakVar.h
  */
-template <class T>    
+
 class TweakVar : public TweakItem {
+public:
+    enum Type {
+        STDSTRING,
+        FLOAT
+    };
 private:
     std::string label;
-    T* context;
-    TweakVarHandler<T> *handler;
-public:
-    TweakVar(std::string name, std::string label, T* context, TweakVarHandler<T>* h)
-        : TweakItem(name), label(label), context(context), handler(h) {        
-    }
-    void AddToBar(TweakBar* bar) {
-        TwBar *twBar = bar->GetBar();
-        string def = " label=" + label;
-        TwAddVarCB(twBar,
-                   GetName().c_str(),
-                   TW_TYPE_STDSTRING,
-                   &TweakVar::AntSetCallback,
-                   &TweakVar::AntGetCallback,
-                   this,
-                   def.c_str());
+    Type type;
 
+    static TwType TypeToTwType(Type t) {
+        switch(t) {
+        case STDSTRING: return TW_TYPE_STDSTRING;
+        case FLOAT: return TW_TYPE_FLOAT;
+        default: return TW_TYPE_STDSTRING;
+        }
     }
+    bool isAdded;
+public:
+    TweakVar(std::string name, std::string label, Type type);
+
+    Type GetType() {
+        return type;
+    }
+
+    void AddToAnt();
+    virtual void SetValue(const void* value) =0;
+    virtual void GetValue(void* value) =0;
+
+    void SetType(Type t);
 
     static void AntSetCallback(const void *value, void* ctx) {
         TweakVar *var = static_cast<TweakVar*>(ctx);
-        var->handler->SetTweakVar(value, var->context);
+        var->SetValue(value);
     }
     static void AntGetCallback(void *value, void* ctx) {
         TweakVar *var = static_cast<TweakVar*>(ctx);
-        var->handler->GetTweakVar(value, var->context);
+        var->GetValue(value);
     }
 
 

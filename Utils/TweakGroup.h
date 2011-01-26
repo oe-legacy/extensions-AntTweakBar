@@ -14,6 +14,7 @@
 #include <Utils/TweakItem.h>
 #include <string>
 #include <vector>
+#include <set>
 
 namespace OpenEngine {
 namespace Utils {
@@ -26,11 +27,13 @@ namespace Utils {
 class TweakGroup : public TweakItem {
 private:
     std::vector<TweakItem*> items;
+    std::set<TweakItem*> dirtySet;
     bool isAdded;
 public:
     TweakGroup(std::string name);
-    void AddItem(TweakItem *item);
-    void AddToBar(TweakBar* bar);
+    void AddItem(TweakItem* item);
+    void AddToAnt();
+    void SetDirty(TweakItem* item);
 
 };
 } // NS Utils

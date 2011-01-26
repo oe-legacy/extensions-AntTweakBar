@@ -71,6 +71,7 @@ public:
     
     virtual void AddFields(AntTweakBar&m) =0;
 
+    virtual void Refresh() {};
 };     
 
 

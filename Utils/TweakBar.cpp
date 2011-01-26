@@ -8,7 +8,7 @@
 //--------------------------------------------------------------------
 
 #include "TweakBar.h"
-
+#include <Display/AntTweakBar.h>
 
 namespace OpenEngine {
 namespace Utils {
@@ -17,7 +17,8 @@ using namespace Display;
 using namespace std;
 
 
-TweakBar::TweakBar(string n) : ITweakBar(n) {
+TweakBar::TweakBar(string n) : ITweakBar(n)
+                             , controller(NULL) {
     
 }
 
@@ -25,8 +26,22 @@ void TweakBar::AddItem(TweakItem* i) {
     items.push_back(i);
 }
     
+void TweakBar::SetDirty(TweakItem* i) {
+    dirtySet.insert(i);
+    controller->SetDirty(this);
+}
+
+void TweakBar::Refresh() {
+    for(set<TweakItem*>::iterator itr = dirtySet.begin();
+        itr != dirtySet.end();
+        itr++) {
+        (*itr)->AddToBar(this);
+    }
+    dirtySet.clear();
+}
 
 void TweakBar::AddFields(AntTweakBar& m) {
+    controller = &m;
     for (vector<TweakItem*>::iterator itr = items.begin();
          itr != items.end();
          itr++) {

@@ -16,11 +16,14 @@ ADD_LIBRARY(Extensions_AntTweakBar
 	Display/AntTweakBar.cpp
   	Display/ITweakBar.h
   	Display/ITweakBar.cpp
+  	Utils/TweakItem.h
+  	Utils/TweakItem.cpp
   	Utils/TweakBar.h
   	Utils/TweakBar.cpp
   	Utils/TweakGroup.h
   	Utils/TweakGroup.cpp
   	Utils/TweakVar.h
+  	Utils/TweakVar.cpp
 )
 
 IF(NOT MINGW)

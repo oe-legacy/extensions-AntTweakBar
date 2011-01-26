@@ -51,10 +51,22 @@ void AntTweakBar::Initialize(RenderingEventArg arg) {
     }
 }
 
+void AntTweakBar::Refresh() {
+    for (set<ITweakBar*>::iterator itr = dirtySet.begin();
+         itr != dirtySet.end();
+         itr++) {
+        (*itr)->Refresh();
+    }
+    dirtySet.clear();
+}
+
 void AntTweakBar::Handle(RenderingEventArg arg) {
     glUseProgram(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glClientActiveTexture(GL_TEXTURE0);
+
+    // Refresh
+    Refresh();
 
     TwDraw();
 }
@@ -104,6 +116,10 @@ void AntTweakBar::AttachTo(IRenderer& renderer) {
     renderer.InitializeEvent().Attach(init);
     renderer.DeinitializeEvent().Attach(deinit);
     renderer.PostProcessEvent().Attach(*this);
+}
+
+void AntTweakBar::SetDirty(ITweakBar* b) {
+    dirtySet.insert(b);
 }
 
 

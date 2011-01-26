@@ -15,6 +15,8 @@
 #include <Core/IListener.h>
 #include <Renderers/IRenderer.h>
 
+#include <set>
+
 #ifdef WIN32
 	#include <AntTweakBar.h>
 #else
@@ -65,7 +67,11 @@ private:
     list<ITweakBar*> barQueue;
     bool initialized;
 
+    set<ITweakBar*> dirtySet;
+
     void _AddBar(ITweakBar* b);
+    void Refresh();
+
 public:
 
     TwType antVec3fType;
@@ -85,6 +91,8 @@ public:
 
 
     AntTweakBar();
+
+    void SetDirty(ITweakBar*);
     
     void Initialize(RenderingEventArg arg);
     void Handle(RenderingEventArg arg);
