@@ -19,7 +19,7 @@ namespace Utils {
 void TweakItem::SetDirty() {
     if (group)
         group->SetDirty(this);
-    else 
+    else if (bar)
         bar->SetDirty(this);        
 }
     

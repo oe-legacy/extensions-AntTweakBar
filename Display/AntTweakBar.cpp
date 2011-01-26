@@ -109,7 +109,7 @@ void AntTweakBar::AddBar(ITweakBar* b) {
 
 void AntTweakBar::_AddBar(ITweakBar* b) {
     bars.push_back(b);
-    b->SetupBar(*this);
+    b->SetupBar(this);
 }
 
 void AntTweakBar::AttachTo(IRenderer& renderer) { 

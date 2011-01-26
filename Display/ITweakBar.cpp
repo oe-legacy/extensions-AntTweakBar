@@ -24,7 +24,7 @@ TwBar* ITweakBar::GetBar() {
     return bar;
 }
 
-void ITweakBar::SetupBar(AntTweakBar&m) {
+void ITweakBar::SetupBar(AntTweakBar* m) {
     bar = TwNewBar(name.c_str());
     
     AddFields(m);

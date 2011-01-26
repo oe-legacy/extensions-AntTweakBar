@@ -44,8 +44,19 @@ private:
         }
     }
     bool isAdded;
+    bool mustRemove;
+    string defs;
+
+    bool haveStep;
+    float stepSize;
+    bool haveMin;
+    float minVal;
+    bool haveMax;
+    float maxVal;
 public:
     TweakVar(std::string name, std::string label, Type type);
+
+    void MakeDefString();
 
     Type GetType() {
         return type;
@@ -56,6 +67,10 @@ public:
     virtual void GetValue(void* value) =0;
 
     void SetType(Type t);
+    void SetStepSize(float s);
+    void SetMinValue(float s);
+    void SetMaxValue(float s);
+
 
     static void AntSetCallback(const void *value, void* ctx) {
         TweakVar *var = static_cast<TweakVar*>(ctx);

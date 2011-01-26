@@ -30,11 +30,13 @@ private:
     std::vector<TweakItem*> items;
     std::set<TweakItem*> dirtySet;
     bool isAdded;
+    bool isClosed;
 public:
     TweakGroup(std::string name, std::string label);
     void AddItem(TweakItem* item);
     void AddToAnt();
     void SetDirty(TweakItem* item);
+    void Close();
 
 };
 } // NS Utils

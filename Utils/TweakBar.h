@@ -36,7 +36,7 @@ public:
     TweakBar(string name);
     void AddItem(TweakItem* i);
 
-    void AddFields(Display::AntTweakBar&m);
+    void AddFields(Display::AntTweakBar* m);
     
     void SetDirty(TweakItem* i);
     void Refresh();

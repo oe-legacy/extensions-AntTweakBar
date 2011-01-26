@@ -63,13 +63,13 @@ public:
     ITweakBar(string name);
     virtual ~ITweakBar();
 
-    void SetupBar(AntTweakBar&m);
+    void SetupBar(AntTweakBar* m);
     TwBar* GetBar();
     
     void SetIconify(bool s);
     void SetPosition(Vector<2,float> p);
     
-    virtual void AddFields(AntTweakBar&m) =0;
+    virtual void AddFields(AntTweakBar* m) =0;
 
     virtual void Refresh() {};
 };     

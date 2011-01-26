@@ -27,8 +27,10 @@ void TweakBar::AddItem(TweakItem* i) {
 }
     
 void TweakBar::SetDirty(TweakItem* i) {
-    dirtySet.insert(i);
-    controller->SetDirty(this);
+    if (controller) {
+        dirtySet.insert(i);
+        controller->SetDirty(this);
+    }
 }
 
 void TweakBar::Refresh() {
@@ -40,8 +42,8 @@ void TweakBar::Refresh() {
     dirtySet.clear();
 }
 
-void TweakBar::AddFields(AntTweakBar& m) {
-    controller = &m;
+void TweakBar::AddFields(AntTweakBar* m) {
+    controller = m;
     for (vector<TweakItem*>::iterator itr = items.begin();
          itr != items.end();
          itr++) {

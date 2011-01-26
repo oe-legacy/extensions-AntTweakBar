@@ -18,8 +18,8 @@ using namespace std;
 
 TweakGroup::TweakGroup(string name, string label) : TweakItem(name)
     , label(label) 
-    , isAdded(false) {
-
+    , isAdded(false)
+    , isClosed(false) {
 }
 
 void TweakGroup::AddItem(TweakItem *item) {
@@ -36,7 +36,7 @@ void TweakGroup::SetDirty(TweakItem* item) {
 }
 
 void TweakGroup::AddToAnt() {
-    string barName = TwGetBarName(bar->GetBar());
+
     
     for (set<TweakItem*>::iterator itr = dirtySet.begin();
          itr != dirtySet.end();
@@ -44,16 +44,30 @@ void TweakGroup::AddToAnt() {
         TweakItem* item = *itr;
         item->AddToBar(bar);
         string n = item->GetName();
-        string def = barName + "/" + n + " group=" + GetName();
-        
-        TwDefine(def.c_str());
+        const char* gn = GetName().c_str();
+        if (!TwSetParam(bar->GetBar(), n.c_str(), "group", TW_PARAM_CSTRING, 1, gn))
+            logger.error << "Set Group: " << logger.end;
     }
-    string def = barName + "/" + GetName() + " label=" + label;
-    TwDefine(def.c_str());
-    //logger.info << def << logger.end;
+    
+    const char* ln = label.c_str();
+    
+    if (!TwSetParam(bar->GetBar(), GetName().c_str(), "label", TW_PARAM_CSTRING, 1, ln))
+        logger.error << "Set label: " << logger.end;
+    
+    if (isClosed) {
+        int opn = 0;
+        if (!TwSetParam(bar->GetBar(), GetName().c_str(), "opened", TW_PARAM_INT32, 1, &opn))
+            logger.error << "Set opended" << logger.end;
+    }
+
     isAdded = true;
+
 }
 
+void TweakGroup::Close() {
+    isClosed = true;
+    TweakItem::SetDirty();
+}
 
 } // NS Utils
 } // NS OpenEngine
