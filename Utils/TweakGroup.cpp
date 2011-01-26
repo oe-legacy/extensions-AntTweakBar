@@ -16,13 +16,16 @@ namespace Utils {
 
     using namespace std;
 
-    TweakGroup::TweakGroup(string name) : TweakItem(name), isAdded(false) {
+    TweakGroup::TweakGroup(string name) : TweakItem(name) , isAdded(false) {
 
     }
 
     void TweakGroup::AddItem(TweakItem *item) {
         items.push_back(item);
         item->group = this;
+        dirtySet.insert(item);
+        if (isAdded)
+            TweakItem::SetDirty();        
     }
 
     void TweakGroup::SetDirty(TweakItem* item) {
@@ -32,32 +35,18 @@ namespace Utils {
 
     void TweakGroup::AddToAnt() {
         string barName = TwGetBarName(bar->GetBar());
-        if (isAdded) {
-            for (set<TweakItem*>::iterator itr = dirtySet.begin();
-                 itr != dirtySet.end();
-                 itr++) {
-                TweakItem* item = *itr;
-                item->AddToAnt();
-                string n = item->GetName();
-                string def = barName + "/" + n + " group=" + GetName();
 
-                TwDefine(def.c_str());
+        for (set<TweakItem*>::iterator itr = dirtySet.begin();
+             itr != dirtySet.end();
+             itr++) {
+            TweakItem* item = *itr;
+            item->AddToBar(bar);
+            string n = item->GetName();
+            string def = barName + "/" + n + " group=" + GetName();
 
-            }
-        } else {
-            for (vector<TweakItem*>::iterator itr = items.begin();
-                 itr != items.end();
-                 itr++) {
-                TweakItem *item = *itr;
-                item->AddToBar(bar);
-
-                string n = item->GetName();
-                string def = barName + "/" + n + " group=" + GetName();
-
-                TwDefine(def.c_str());
-            }
-            isAdded = true;
+            TwDefine(def.c_str());
         }
+        isAdded = true;
     }
 
 
