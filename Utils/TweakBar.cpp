@@ -24,6 +24,7 @@ TweakBar::TweakBar(string n) : ITweakBar(n)
 
 void TweakBar::AddItem(TweakItem* i) {
     items.push_back(i);
+    SetDirty(i);
 }
     
 void TweakBar::SetDirty(TweakItem* i) {
