@@ -31,7 +31,8 @@ public:
     enum Type {
         STDSTRING,
         FLOAT,
-        UINT32
+        UINT32,
+        BOOL
     };
 private:
     std::string label;
@@ -42,6 +43,7 @@ private:
         case STDSTRING: return TW_TYPE_STDSTRING;
         case FLOAT: return TW_TYPE_FLOAT;
         case UINT32: return TW_TYPE_UINT32;
+        case BOOL: return TW_TYPE_BOOLCPP;
         default: return TW_TYPE_STDSTRING;
         }
     }
