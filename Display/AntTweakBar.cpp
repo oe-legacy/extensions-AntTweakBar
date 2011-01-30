@@ -6,7 +6,8 @@ namespace Display {
 
 AntTweakBar::AntTweakBar() : init(Initializer(*this)), 
                              deinit(Deinitializer(*this)),
-                             initialized(false) {
+                             initialized(false),
+                             enabled(true) {
     
 }
 
@@ -61,16 +62,23 @@ void AntTweakBar::Refresh() {
 }
 
 void AntTweakBar::Handle(RenderingEventArg arg) {
+    if (!enabled)
+        return;
+
     glUseProgram(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glClientActiveTexture(GL_TEXTURE0);
-
+     
     // Refresh
     Refresh();
-
+    
     TwDraw();
 }
 void AntTweakBar::Handle(KeyboardEventArg arg) {
+    if (!enabled) {
+        uke.Notify(arg);
+        return;                
+    }
     int handled = 0;
     if (arg.type == EVENT_PRESS) {
         handled = TwKeyPressed(arg.sym, arg.mod);
@@ -82,6 +90,10 @@ void AntTweakBar::Handle(KeyboardEventArg arg) {
     }
 }
 void AntTweakBar::Handle(MouseButtonEventArg arg) {
+    if (!enabled) {
+        umbe.Notify(arg);
+        return;                
+    }
     int handled = 0;
     static int wheelPos = 0;
     if (arg.button == BUTTON_WHEEL_UP || arg.button == BUTTON_WHEEL_DOWN) {
@@ -94,6 +106,11 @@ void AntTweakBar::Handle(MouseButtonEventArg arg) {
         umbe.Notify(arg);
 }
 void AntTweakBar::Handle(MouseMovedEventArg arg) {
+    if (!enabled) {
+        umme.Notify(arg);
+        return;                
+    }
+
     int handled = TwMouseMotion(arg.x, arg.y);
     if (!handled)
         umme.Notify(arg);
@@ -110,6 +127,10 @@ void AntTweakBar::AddBar(ITweakBar* b) {
 void AntTweakBar::_AddBar(ITweakBar* b) {
     bars.push_back(b);
     b->SetupBar(this);
+}
+
+void AntTweakBar::ToggleEnabled() {
+    enabled = !enabled;
 }
 
 void AntTweakBar::AttachTo(IRenderer& renderer) { 

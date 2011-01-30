@@ -69,6 +69,8 @@ private:
 
     set<ITweakBar*> dirtySet;
 
+    bool enabled;
+
     void _AddBar(ITweakBar* b);
     void Refresh();
 
@@ -105,6 +107,8 @@ public:
     void AttachTo(IRenderer& renderer);
 
     void AddBar(ITweakBar* bar);
+
+    void ToggleEnabled();
 
     IEvent<MouseButtonEventArg>& MouseButtonEvent() {return umbe;}
     IEvent<MouseMovedEventArg>& MouseMovedEvent() {return umme;}
