@@ -30,7 +30,8 @@ class TweakVar : public TweakItem {
 public:
     enum Type {
         STDSTRING,
-        FLOAT
+        FLOAT,
+        UINT32
     };
 private:
     std::string label;
@@ -40,6 +41,7 @@ private:
         switch(t) {
         case STDSTRING: return TW_TYPE_STDSTRING;
         case FLOAT: return TW_TYPE_FLOAT;
+        case UINT32: return TW_TYPE_UINT32;
         default: return TW_TYPE_STDSTRING;
         }
     }
