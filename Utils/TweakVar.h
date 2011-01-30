@@ -32,7 +32,8 @@ public:
         STDSTRING,
         FLOAT,
         UINT32,
-        BOOL
+        BOOL,
+        COLOR4F
     };
 private:
     std::string label;
@@ -44,6 +45,7 @@ private:
         case FLOAT: return TW_TYPE_FLOAT;
         case UINT32: return TW_TYPE_UINT32;
         case BOOL: return TW_TYPE_BOOLCPP;
+        case COLOR4F: return TW_TYPE_COLOR4F;
         default: return TW_TYPE_STDSTRING;
         }
     }
