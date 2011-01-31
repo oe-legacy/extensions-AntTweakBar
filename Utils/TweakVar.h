@@ -32,6 +32,7 @@ public:
         STDSTRING,
         FLOAT,
         UINT32,
+        INT32,
         BOOL,
         COLOR4F
     };
@@ -44,6 +45,7 @@ private:
         case STDSTRING: return TW_TYPE_STDSTRING;
         case FLOAT: return TW_TYPE_FLOAT;
         case UINT32: return TW_TYPE_UINT32;
+        case INT32: return TW_TYPE_INT32;
         case BOOL: return TW_TYPE_BOOLCPP;
         case COLOR4F: return TW_TYPE_COLOR4F;
         default: return TW_TYPE_STDSTRING;
