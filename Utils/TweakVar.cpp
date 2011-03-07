@@ -38,8 +38,8 @@ TweakVar::TweakVar(std::string name, std::string label, Type type)
             TwAddVarCB(twBar,
                        GetName().c_str(),
                        TypeToTwType(type),
-                       &TweakVar::AntSetCallback,
-                       &TweakVar::AntGetCallback,
+                       ((TwSetVarCallback) &TweakVar::AntSetCallback),
+                       ((TwGetVarCallback) &TweakVar::AntGetCallback),
                        this,
                        defs.c_str());
             const char* ln = label.c_str();
