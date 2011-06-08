@@ -48,7 +48,7 @@ public:
         string def = "";
         TwAddButton(twBar,
                     GetName().c_str(),
-                    &TweakButton::AntCallback,
+                    ((TwButtonCallback) &TweakButton::AntCallback),
                     this,
                     def.c_str());
     }
