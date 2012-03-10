@@ -1,6 +1,6 @@
 # dist file for AntTweakBar
-darcs      /extensions/AntTweakBar            http://openengine.dk/code/extensions/AntTweakBar
-darcs-dev  /extensions/AntTweakBar            fh.daimi.au.dk:/users/cgd/code/extensions/AntTweakBar
+git      /extensions/AntTweakBar            git://github.com/oe-legacy/extensions-AntTweakBar.git
+git-dev  /extensions/AntTweakBar            git@github.com:oe-legacy/extensions-AntTweakBar.git
 
 # windows libraries
 win32 /libraries http://openengine.dk/data/libraries/AntTweakBar-win32.zip
